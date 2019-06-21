@@ -102,22 +102,6 @@ function appendSibling(DOMNode $newnode, DOMNode $ref) {
 
 function processImages($page) {
     foreach (nodes($page, 'img') as $img) {
-        $show = false;
-
-        // $img->getAttribute('class') == '' is used for images inside text with formulas
-        if ($img->getAttribute('class') == '') {
-            $show = true;
-        } elseif (starts(IMAGES, 'explain') && !hasClass($img, 'explanation')) {
-            $show = false;
-        } elseif (starts(IMAGES, 'all')) {
-            $show = true;
-        }
-
-        if (!$show) {
-            remove($img);
-            continue;
-        }
-
         $imageSrc = $img->getAttribute('src');
         $imgName = pathinfo(parse_url($imageSrc, PHP_URL_PATH), PATHINFO_BASENAME);
 
@@ -125,9 +109,6 @@ function processImages($page) {
 
         $imageSrc = str_replace('https://learnyousomeerlang.com/static/img', '../images', $imageSrc);
         $img->setAttribute('src', $imageSrc);
-
-        if ($img->getAttribute('class') == '')
-            continue;
 
         $parent = $img->parentNode;
 
